@@ -119,18 +119,32 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   return newRequire;
 })({"app.js":[function(require,module,exports) {
 var ajax = new XMLHttpRequest();
+var container = document.getElementById("root");
+var content = document.createElement("div");
 var NEWS_URL = "https://api.hnpwa.com/v0/news/1.json";
-ajax.open("GET", NEWS_URL, false); // url에서 가져오는 data를 동기적으로 처리함.
-ajax.send();
-var newsFeed = JSON.parse(ajax.response); // 입력받은 data를 객체로 바꿔서 return
-
-var ul = document.createElement("ul");
-document.getElementById("root").appendChild(ul);
-for (var i = 0; i < 10; i++) {
-  var li = document.createElement("li");
-  ul.appendChild(li);
-  li.innerHTML = newsFeed[i].title;
+var CONTENT_URL = "https://api.hnpwa.com/v0/item/@id.json";
+function getData(url) {
+  ajax.open("GET", url, false); // url에서 가져오는 data를 동기적으로 처리함.
+  ajax.send();
+  return JSON.parse(ajax.response); // 입력받은 data를 객체로 바꿔서 return
 }
+
+var newsFeed = getData(NEWS_URL);
+var ul = document.createElement("ul");
+window.addEventListener("hashchange", function () {
+  var id = location.hash.substring(1);
+  var newsContent = getData(CONTENT_URL.replace("@id", id));
+  var title = document.createElement("h1");
+  title.innerHTML = newsContent.title;
+  content.appendChild(title);
+});
+for (var i = 0; i < 10; i++) {
+  var div = document.createElement("div");
+  div.innerHTML = "\n  <li>\n    <a href=\"#".concat(newsFeed[i].id, "\">\n      ").concat(newsFeed[i].title, " (").concat(newsFeed[i].comments_count, ")\n    </a>\n  </li>\n  ");
+  ul.appendChild(div.firstElementChild);
+}
+container.appendChild(ul);
+container.appendChild(content);
 },{}],"../../.nvm/versions/node/v16.13.1/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
