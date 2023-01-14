@@ -1,12 +1,28 @@
-const ajax = new XMLHttpRequest();
+type Store = {
+  currentPage: number;
+  feeds: NewsFeed[];
+};
 
-const container = document.getElementById("root");
+type NewsFeed = {
+  id: number;
+  comment_count: number;
+  points: number;
+  title: string;
+  url: string;
+  user: string;
+  time_age: string;
+  read?: boolean; // ? : 선택적 속성
+};
+
+const ajax: XMLHttpRequest = new XMLHttpRequest();
+
+const container: HTMLElement | null = document.getElementById("root");
 const content = document.createElement("div");
 
 const NEWS_URL = "https://api.hnpwa.com/v0/news/1.json";
 const CONTENT_URL = "https://api.hnpwa.com/v0/item/@id.json";
 
-const store = {
+const store: Store = {
   currentPage: 1,
   feeds: [],
 };
