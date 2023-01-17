@@ -43,7 +43,7 @@ function makeFeeds(feeds) {
 }
 // 글 목록 화면
 function newsFeed() {
-  let newsFeed = store.feeds;
+  let newsFeed: NewsFeed[] = store.feeds;
   const newsList = [];
   let template = `
     <div class="bg-gray-600 min-h-screen">
@@ -106,8 +106,11 @@ function newsFeed() {
     store.currentPage > 1 ? store.currentPage - 1 : 1
   );
   template = template.replace("{{__next_page__}}", store.currentPage + 1);
-
-  container.innerHTML = template;
+  if (container != null) {
+    container.innerHTML = template;
+  } else {
+    console.error("최상위 컨테이너가 없어 UI를 진행하지 못합니다.");
+  }
 }
 
 // 글 내용 화면
