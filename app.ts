@@ -174,11 +174,14 @@ function newsDetail() {
 
     return commentString.join("");
   }
-
-  container.innerHTML = template.replace(
-    "{{__comments__}}",
-    makeComment(newsContent.comments)
-  );
+  if (container) {
+    container.innerHTML = template.replace(
+      "{{__comments__}}",
+      makeComment(newsContent.comments)
+    );
+  } else {
+    console.error("최상위 컨테이너가 없어 UI를 진행하지 못합니다.");
+  }
 }
 
 function router() {
