@@ -180,7 +180,7 @@ function newsDetail() {
       makeComment(newsContent.comments)
     );
   } else {
-    console.error("최상위 컨테이너가 없어 UI를 진행하지 못합니다.");
+    console.error("최상위 컨테이너가 없어 UI를 진행하지 못합니다."); // console.error
   }
 }
 
